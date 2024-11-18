@@ -8,7 +8,7 @@ import Products from '../components/Products/Products';
 import Blogs from '../components/Blogs/Blogs';
 import References from '../components/References/References';
 import Footer from '../components/Footer/Footer';
-
+import LoginPage from './LoginPage';
 const BannerData = {
     discount: "30% OFF",
     title: "lorem lorem",
