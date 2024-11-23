@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
+import post from '../utils/request/index';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -6,6 +8,9 @@ const LoginPage = () => {
     password: ''
   });
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);  // State to handle loading
+  const [errorMessage, setErrorMessage] = useState(null);  // State to store error message
+  const navigate = useNavigate();  // useNavigate hook to redirect on success
 
   const validateForm = () => {
     const newErrors = {};
@@ -18,7 +23,7 @@ const LoginPage = () => {
     
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
+    } else if (formData.password.length < 2) {
       newErrors.password = 'Password must be at least 6 characters';
     }
 
@@ -26,11 +31,20 @@ const LoginPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      // Handle form submission here
-      console.log('Form submitted:', formData);
+      try {
+        setLoading(true);  // Set loading to true when submitting
+        setErrorMessage(null);  // Reset error message
+        const response = await post({url: 'users/signin', data: formData});
+        localStorage.setItem('token', response);
+        setLoading(false);  // Set loading to false after response
+        navigate('/profile');  // Redirect to profile page after success
+      } catch (error) {
+        setLoading(false);  // Set loading to false in case of error
+        setErrorMessage('Error: ' + error.message);  // Set the error message
+      }
     }
   };
 
@@ -129,10 +143,18 @@ const LoginPage = () => {
           <div>
             <button
               type="submit"
+              disabled={loading}  // Disable button while loading
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              Sign in
+              {loading ? (
+                <div className="loader">Loading...</div>  // Add a loading spinner here
+              ) : (
+                'Sign in'
+              )}
             </button>
+            {errorMessage && (
+              <p className="mt-2 text-sm text-red-600">{errorMessage}</p>  // Show error message
+            )}
           </div>
 
           <div className="text-center">

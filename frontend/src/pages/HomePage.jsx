@@ -9,6 +9,7 @@ import Blogs from '../components/Blogs/Blogs';
 import References from '../components/References/References';
 import Footer from '../components/Footer/Footer';
 import LoginPage from './LoginPage';
+import TableUsers from '../components/Admin/TableUsers'
 const BannerData = {
     discount: "30% OFF",
     title: "lorem lorem",
@@ -35,15 +36,16 @@ const HomePage = () => {
     return (
         <div>
             <Navbar/>
+            {/* <TableUsers/> */}
             <Hero />
             <Category />
-            <Category2 />
+            {/* <Category2 /> */}
             <Services />
             <Banner data={BannerData} />
             <Products />
             <Banner data={BannerData2} />
-            <Blogs />
-            <References />
+            {/* <Blogs /> */}
+            {/* <References /> */}
             <Footer />
         </div>
     );
