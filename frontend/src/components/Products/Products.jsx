@@ -13,6 +13,7 @@ const Products = () => {
     const fetchData = async () => {
       try {
         const response = await get({ url: 'artworks', method: 'GET' });
+        console.log(response.items)
         setProductsData(response.items); // Set the fetched items to the state
         setLoading(false);
       } catch (err) {
@@ -35,7 +36,7 @@ const Products = () => {
   // Map the fetched data to a suitable format for the ProductCard
   const mappedProducts = productsData.map(product => ({
     id: product.id,
-    img: "path_to_image", // You can set this based on your data if available
+    img: "https://cdn.prod.website-files.com/665858d6442988bba748fa67/6684443d10d2d858150d8aaf_imagem-1-ux-design-e-product-design-descubra-a-diferenca_61f14bab0929ddc819c0d8d688512a0b_2000.png", // You can set this based on your data if available
     title: product.title,
     price: product.price,
     aosDelay: "200", // You can adjust this for animation delay based on your needs

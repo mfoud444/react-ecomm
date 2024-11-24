@@ -22,6 +22,7 @@ const ProfilePage = () => {
         setProfile(response);
         setLoading(false);
       } catch (error) {
+        navigate('/auth/login');
         console.log('Failed to load profile. Please try again later.', error.message);
         setError('Failed to load profile. Please try again later.');
         setLoading(false);

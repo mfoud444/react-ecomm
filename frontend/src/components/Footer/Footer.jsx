@@ -35,7 +35,7 @@ const Footer = () => {
                             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores alias cum.
                         </p>
                         <p className="text-gray-500 mt-4">Made with 💖 </p>
-                        <a href="linkedIn url !!" target="_blank" rel="noopener noreferrer"
+                        <a href="/profile" target="_blank" rel="noopener noreferrer"
                             className="inline-block bg-red-500 text-white py-2 px-4 mt-4 text-sm rounded-full">
                             My Profile
                         </a>
