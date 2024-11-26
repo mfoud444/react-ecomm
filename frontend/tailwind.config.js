@@ -15,15 +15,18 @@ export default {
         brandBlue: "#1376f4",
         brandWhite: "#eeeeee",
       },
-      container:{
-        center:true,
-        padding:{
-          DEFAULT:"1rem",
-          sm: "2rem",
-
-        }
-      }
-    },
+      container: {
+        center: true,
+       
+        padding: {
+          DEFAULT: '1rem',
+          sm: '2rem',
+          lg: '4rem',
+          xl: '5rem',
+          '2xl': '6rem',
+        },
+      },
+    }
   },
   plugins: [],
 }

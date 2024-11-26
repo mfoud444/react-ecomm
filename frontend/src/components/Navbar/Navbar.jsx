@@ -93,10 +93,10 @@ const Navbar = ({ handleOrderPopup }) => {
                     {/* Navbar right section */}
                     <div className="flex justify-between items-center gap-4">
                         {/* search Bar section */}
-                        <div className="relative group hidden sm:block">
+                        {/* <div className="relative group hidden sm:block">
                             <input type="text" placeholder="Search.." className="search-bar" />
                             <IoMdSearch className="text-xl text-gray-600 group-hover:text-primary dark:text-gray-400 absolute top-1/2 -translate-y-1/2 right-3 duration-200" />
-                        </div>
+                        </div> */}
 
                         {/* Order-button section */}
                         <button className="relative p-3" onClick={handleOrderPopup}>
