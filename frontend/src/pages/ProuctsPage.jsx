@@ -103,7 +103,7 @@ const ProductsPage = () => {
     return (
       <div>
         <Navbar />
-        <div className="flex h-[80vh] justify-center items-center">
+        <div className="flex flex-col gap-2 h-[80vh] justify-center items-center">
         <Heading 
           title="What we offer" 
           subtitle="Explore Our Pieces" 
