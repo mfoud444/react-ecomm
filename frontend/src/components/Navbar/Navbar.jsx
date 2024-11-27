@@ -3,6 +3,8 @@ import { IoMdSearch } from "react-icons/io";
 import { FaCaretDown, FaCartShopping } from "react-icons/fa6";
 import DarkMode from "./DarkMode";
 import { Link } from 'react-router-dom'; 
+import { HiMenuAlt3, HiOutlineX } from "react-icons/hi";
+import { useState } from "react";
 
 const MenuLinks = [
     {
@@ -39,6 +41,7 @@ const DropdownLinks = [
         link: "/best-selling",
     },
     {
+        
         id: 3,
         name: "Top Rated",
         link: "/top-rated",
@@ -46,6 +49,9 @@ const DropdownLinks = [
 ];
 
 const Navbar = ({ handleOrderPopup }) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+
     return (
         <div className="bg-white dark:bg-gray-900 dark:text-white duration-200 relative z-40">
             <div className="py-4">
@@ -99,15 +105,64 @@ const Navbar = ({ handleOrderPopup }) => {
                         </div> */}
 
                         {/* Order-button section */}
-                        <button className="relative p-3" onClick={handleOrderPopup}>
+                        <Link to="/cart" className="relative p-3">
                             <FaCartShopping className="text-xl text-gray-600 dark:text-gray-400" />
                             <div className="w-4 h-4 bg-red-500 text-white rounded-full absolute top-0 right-0 flex items-center justify-center text-xs">
-                                0
+                         0   
                             </div>
-                        </button>
+                        </Link>
+                        <div>  
+                    
+                        </div>
 
                         {/* Dark-Mode section */}
                         <DarkMode />
+                    </div>
+
+                    {/* Mobile Menu Button */}
+                    <button
+                        className="lg:hidden text-2xl"
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    >
+                        {isMenuOpen ? <HiOutlineX /> : <HiMenuAlt3 />}
+                    </button>
+
+                    {/* Mobile Menu */}
+                    <div
+                        className={`${
+                            isMenuOpen ? "block" : "hidden"
+                        } lg:hidden bg-white dark:bg-gray-900 absolute top-full left-0 right-0 py-4 shadow-md`}
+                    >
+                        <ul className="space-y-4 px-4">
+                            {MenuLinks.map((data) => (
+                                <li key={data.id}>
+                                    <Link
+                                        to={data.link}
+                                        className="block font-semibold text-gray-500 hover:text-black dark:hover:text-white duration-200"
+                                    >
+                                        {data.name}
+                                    </Link>
+                                </li>
+                            ))}
+                            {/* Mobile Dropdown Links */}
+                            <li>
+                                <p className="font-semibold text-gray-500 dark:text-gray-400 py-2">
+                                    Quick Links
+                                </p>
+                                <ul className="pl-4 space-y-2">
+                                    {DropdownLinks.map((data) => (
+                                        <li key={data.id}>
+                                            <Link
+                                                to={data.link}
+                                                className="block text-gray-500 hover:text-black dark:hover:text-white duration-200"
+                                            >
+                                                {data.name}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

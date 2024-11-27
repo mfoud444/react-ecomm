@@ -1,15 +1,15 @@
-import Hero from '../components/Hero/Hero';
-import Navbar from '../components/Navbar/Navbar';
-import Category from '../components/Category/Category';
-import Category2 from '../components/Category/Category2';
-import Services from '../components/Services/Services';
-import Banner from '../components/Banner/Banner';
-import Products from '../components/Products/Products';
-import Blogs from '../components/Blogs/Blogs';
-import References from '../components/References/References';
-import Footer from '../components/Footer/Footer';
+import Hero from '@/components/Hero/Hero';
+import Navbar from '@/components/Navbar/Navbar';
+import Category from '@/components/Category/Category';
+import Category2 from '@/components/Category/Category2';
+import Services from '@/components/Services/Services';
+import Banner from '@/components/Banner/Banner';
+import Products from '@/components/Products/Products';
+import Blogs from '@/components/Blogs/Blogs';
+import References from '@/components/References/References';
+import Footer from '@/components/Footer/Footer';
 import LoginPage from './LoginPage';
-import TableUsers from '../components/Admin/TableUsers'
+import TableUsers from '@/components/Admin/TableUsers'
 const BannerData = {
     discount: "30% OFF",
     title: "lorem lorem",

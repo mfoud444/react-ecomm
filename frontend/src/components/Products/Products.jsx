@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import get from '../../utils/request';
-import Heading from "../Shared/Heading";
+import Heading from "../common/Heading";
 import ProductCard from "./ProductCard";
 
 const Products = () => {

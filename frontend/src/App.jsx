@@ -6,6 +6,11 @@ import WorkshopsPage from './pages/WorkshopsPage';
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ProfilePage from "./pages/ProfilePage";
+import CartPage from "./pages/CartPage";
+import AdminDashboard from './pages/admin/AdminDashboard'
+import ProductManagement from './pages/admin/ProductManagement'
+// import AdminUsers from './pages/admin/AdminUsers';
+// import AdminOrders from './pages/admin/AdminOrders';
 const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
   { path: "/shop", element: <ProuctsPage /> },
@@ -15,6 +20,11 @@ const router = createBrowserRouter([
   { path: "/auth/signup", element: <SignupPage/> },
   { path: "/profile", element: <ProfilePage/> },
   { path: "*", element: <div>Page Not Found</div> },
+  { path: "/cart", element: <CartPage /> },
+  { path: "/admin", element: <AdminDashboard /> },
+  { path: "/admin/products", element: <ProductManagement /> },
+  // { path: "/admin/users", element: <AdminUsers /> },
+  // { path: "/admin/orders", element: <AdminOrders /> },
 ]);
 
 const App = () => {

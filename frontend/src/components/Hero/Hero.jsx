@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import Slider from "react-slick";
-import Button from '../Shared/Button';
+import Button from '../common/Button';
 import { useEffect, useState } from 'react';
 
 const Hero = () => {

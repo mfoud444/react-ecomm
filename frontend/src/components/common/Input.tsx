@@ -8,7 +8,7 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   required?: boolean;
 }
 
-export const FormInput: React.FC<FormInputProps> = ({ 
+export const Input: React.FC<FormInputProps> = ({ 
   label, 
   id, 
   type = "text", 
@@ -48,4 +48,4 @@ export const FormInput: React.FC<FormInputProps> = ({
 };
 
 
-export default FormInput;
+export default Input;

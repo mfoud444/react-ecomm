@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Button from "../Shared/Button";
+import Button from "../common/Button";
 import get from '../../utils/request';  
 
 // Assuming that category images and names are returned from the API

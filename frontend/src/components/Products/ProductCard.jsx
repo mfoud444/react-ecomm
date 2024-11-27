@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';  
-import Button from "../Shared/Button";
+import Button from "../common/Button";
 
 const ProductCard = ({ data }) => {
     // Local cart state for this component

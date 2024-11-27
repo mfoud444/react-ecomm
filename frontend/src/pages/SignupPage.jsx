@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { v6 as uuidv6 } from 'uuid';
 import post from '../utils/request/index';
 import { useNavigate } from 'react-router-dom';
-import { FormInput } from '../components/Admin/FormInput';
+import { Input } from '../components/common/Input';
 
 // Reusable Dropdown Component
 const RoleSelect = ({ value, onChange, error }) => (
@@ -161,7 +161,7 @@ const SignupPage = () => {
           Create your account
         </h2>
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-          <FormInput
+          <Input
             label="Name"
             id="name"
             name="name"
@@ -172,7 +172,7 @@ const SignupPage = () => {
             required
             placeholder="Enter your name"
           />
-          <FormInput
+          <Input
             label="Email"
             id="email"
             name="email"
@@ -210,7 +210,7 @@ const SignupPage = () => {
               <p className="mt-2 text-sm text-red-600">{errors.phoneNumber}</p>
             )}
           </div>
-          <FormInput
+          <Input
             label="Password"
             id="password"
             name="password"
@@ -222,7 +222,7 @@ const SignupPage = () => {
             required
             placeholder="Enter your password"
           />
-          <FormInput
+          <Input
             label="Confirm Password"
             id="confirmPassword"
             name="confirmPassword"

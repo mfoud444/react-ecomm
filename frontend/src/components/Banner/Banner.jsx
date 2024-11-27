@@ -1,7 +1,4 @@
-// import React from 'react'
 import PropTypes from 'prop-types';
-
-
 const Banner = ({ data }) => {
     return (
         <div className="min-h-[550px] justify-center items-center py-12 ">

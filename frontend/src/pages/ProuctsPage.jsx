@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Search, Filter, ArrowUpDown } from "lucide-react";
 import get from "../utils/request";
-import Heading from "../components/Shared/Heading";
-import Loading from "../components/Shared/Loading";
+import Heading from "../components/common/Heading";
+import Loading from "../components/common/Loading";
 import ProductCard from "../components/Products/ProductCard";
 import Navbar from "../components/Navbar/Navbar";
-import StateError from "../components/Shared/StateError";
-import StateNotFound from "../components/Shared/StateNotFound";
+import StateError from "../components/common/StateError";
+import StateNotFound from "../components/common/StateNotFound";
 import Footer from '../components/Footer/Footer';
 const ProductsPage = () => {
   const [productsData, setProductsData] = useState([]);

@@ -1,6 +1,6 @@
 // import React from 'react'
 
-import Button from "../Shared/Button"
+import Button from "../common/Button"
 
 // img +4+5+6   for categories 
 
