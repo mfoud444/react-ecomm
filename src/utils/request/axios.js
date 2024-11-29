@@ -1,4 +1,4 @@
-import axios, { type AxiosResponse } from 'axios'
+import axios from 'axios'
 export const baseURL = "https://canserai-artify.hf.space/api/v1/"
 
 const service = axios.create({
@@ -6,8 +6,8 @@ const service = axios.create({
 })
 service.interceptors.request.use(
   (config) => {
-    const token = false//localStorage.getItem("token");
-//#useAuthStore().token
+    const token = localStorage.getItem("token");
+
     if (token)
       config.headers.Authorization = `Bearer ${token}`
     return config
@@ -18,7 +18,7 @@ service.interceptors.request.use(
 )
 
 service.interceptors.response.use(
-  (response: AxiosResponse): AxiosResponse => {
+  (response) => {
     if (response.status === 200)
       return response
 

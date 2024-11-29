@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Search, Filter, ArrowUpDown } from "lucide-react";
-import get from "../utils/request";
+import get from "../utils/request/index";
 import Heading from "../components/common/Heading";
 import Loading from "../components/common/Loading";
 import ProductCard from "../components/Products/ProductCard";

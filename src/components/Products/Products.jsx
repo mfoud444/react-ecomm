@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import get from '../../utils/request';
+import React, { useEffect, useState } from "react";
+import get from "../../utils/request";
 import Heading from "../common/Heading";
 import ProductCard from "./ProductCard";
+import LoadingSkeleton from '@/components/common/LoadingSkeleton';
 
 const Products = () => {
   const [productsData, setProductsData] = useState([]);
@@ -12,12 +13,12 @@ const Products = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await get({ url: 'artworks', method: 'GET' });
-        console.log(response.items)
+        const response = await get({ url: "artworks", method: "GET" });
+        console.log(response.items);
         setProductsData(response.items); // Set the fetched items to the state
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch products');
+        setError("Failed to fetch products");
         setLoading(false);
       }
     };
@@ -26,15 +27,15 @@ const Products = () => {
   }, []); // Empty dependency array means this runs once when the component mounts
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <><Heading title="What we offer" subtitle={"Explore Our pieces"} /><LoadingSkeleton className="h-64 mb-8" /></>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return "";
   }
 
   // Map the fetched data to a suitable format for the ProductCard
-  const mappedProducts = productsData.map(product => ({
+  const mappedProducts = productsData.map((product) => ({
     id: product.id,
     img: "https://cdn.prod.website-files.com/665858d6442988bba748fa67/6684443d10d2d858150d8aaf_imagem-1-ux-design-e-product-design-descubra-a-diferenca_61f14bab0929ddc819c0d8d688512a0b_2000.png", // You can set this based on your data if available
     title: product.title,
@@ -47,7 +48,7 @@ const Products = () => {
       <div className="container">
         {/* Header section */}
         <Heading title="What we offer" subtitle={"Explore Our pieces"} />
-        
+
         {/* Body section */}
         <ProductCard data={mappedProducts} />
       </div>

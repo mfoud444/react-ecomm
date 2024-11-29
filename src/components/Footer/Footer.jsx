@@ -4,19 +4,19 @@ import { FaInstagram, FaFacebook, FaLinkedin, FaMapMarkerAlt, FaPhoneAlt } from 
 const footerLinks = [
     {
         title: "Home",
-        link: "/#",
+        link: "/",
     },
     {
         title: "About",
-        link: "/#about",
+        link: "/about",
     },
     {
         title: "Contact",
-        link: "/#contact",
+        link: "/contact",
     },
     {
-        title: "Blog",
-        link: "/#blog",
+        title: "Workshops",
+        link: "/workshops",
     },
 ];
 
@@ -35,10 +35,10 @@ const Footer = () => {
                             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores alias cum.
                         </p>
                         <p className="text-gray-500 mt-4">Made with 💖 </p>
-                        <a href="/profile" target="_blank" rel="noopener noreferrer"
+                        {/* <a href="/profile" target="_blank" rel="noopener noreferrer"
                             className="inline-block bg-red-500 text-white py-2 px-4 mt-4 text-sm rounded-full">
                             My Profile
-                        </a>
+                        </a> */}
                     </div>
 
                     {/* Column 2 -  Links */}
@@ -65,7 +65,10 @@ const Footer = () => {
                             <FaMapMarkerAlt className="mr-2" /> Saudi Arabia
                         </p>
                         <p className="flex items-center text-gray-600 dark:text-gray-400 mt-3">
-                            <FaPhoneAlt className="mr-2" /> +996 501122333
+                            <FaPhoneAlt className="mr-2" />
+                            <a href="tel:+996501122333" className="hover:text-primary">
+                                +996 501122333
+                            </a>
                         </p>
                         <div className="flex space-x-4 mt-4">
                             <a href="#" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-800">

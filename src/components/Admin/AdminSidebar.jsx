@@ -1,10 +1,8 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Home, ShoppingBag, Users, FileText } from 'lucide-react';
+import { NavLink } from 'react-router-dom';
+import { X, Home, ShoppingBag, Users, FileText } from 'lucide-react';
 
-const AdminSidebar = () => {
-  const location = useLocation();
-  
+const AdminSidebar = ({ isOpen, onClose, onNavigate }) => {
   const navItems = [
     { icon: Home, label: 'Dashboard', href: '/admin' },
     { icon: ShoppingBag, label: 'Products', href: '/admin/products' },
@@ -13,25 +11,33 @@ const AdminSidebar = () => {
   ];
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg lg:static lg:inset-0">
+    <aside
+      className={`${
+        isOpen ? 'translate-x-0' : '-translate-x-full'
+      } fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}
+    >
       <div className="flex items-center justify-between h-16 px-6 bg-gray-800 text-white">
         <span className="text-xl font-semibold">Admin Panel</span>
+        <button onClick={onClose} className="lg:hidden">
+          <X size={24} />
+          <span className="sr-only">Close sidebar</span>
+        </button>
       </div>
       <nav className="mt-6">
         <ul>
           {navItems.map((item, index) => (
             <li key={index}>
-              <Link
+              <NavLink
                 to={item.href}
-                className={`flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 ${
-                  location.pathname === item.href
-                    ? 'bg-gray-100 text-gray-900 border-r-4 border-gray-900'
-                    : ''
-                }`}
+                onClick={onNavigate}
+                className={({ isActive }) => `
+                  flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900
+                  ${isActive ? 'bg-gray-100 text-gray-900 border-r-4 border-gray-900' : ''}
+                `}
               >
                 <item.icon className="w-5 h-5 mr-3" />
                 {item.label}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>

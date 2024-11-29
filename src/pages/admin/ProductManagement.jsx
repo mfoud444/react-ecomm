@@ -1,48 +1,130 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PlusIcon, PencilIcon, TrashIcon } from 'lucide-react';
 import Button from '@/components/common/Button';
-
-// import { Input as FormInput } from "@/components/Admin/FormInput"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/common/Table"
-
-const initialProducts = [
-  { id: 1, name: 'Product 1', price: 19.99, category: 'Category A' },
-  { id: 2, name: 'Product 2', price: 29.99, category: 'Category B' },
-  { id: 3, name: 'Product 3', price: 39.99, category: 'Category A' },
-];
-
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/common/Table";
+import { get, post, put, del } from '@/utils/request';
+import StateError from '@/components/common/StateError';
+import Loading from '@/components/common/Loading';
+import Iconify from '../../components/common/Iconify';
+import ProductForm from '@/components/Admin/ProductForm';
+import Popconfirm from '@/components/common/Popconfirm';
 export default function ProductManagement() {
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
 
-  const addProduct = (product) => {
-    setProducts([...products, { ...product, id: Date.now() }]);
-    setShowAddForm(false);
+  // Fetch products from API
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await get({ url: 'artworks', method: 'GET' });
+      console.log(response)
+      setProducts(response.items || []);
+      setError(null);
+    } catch (err) {
+      setError('Failed to fetch products');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const updateProduct = (updatedProduct) => {
-    setProducts(products.map(p => p.id === updatedProduct.id ? updatedProduct : p));
-    setShowEditForm(false);
-    setCurrentProduct(null);
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  // Add new product
+  const addProduct = async (product) => {
+    try {
+      setLoading(true);
+      await post({ 
+        url: 'artworks', 
+        data: product 
+      });
+      await fetchProducts();
+      setShowAddForm(false);
+    } catch (err) {
+      setError('Failed to add product');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const deleteProduct = (id) => {
-    setProducts(products.filter(p => p.id !== id));
+  // Update existing product
+  const updateProduct = async (updatedProduct) => {
+    try {
+      setLoading(true);
+      await put({ 
+        url: `artworks/${updatedProduct.id}`, 
+        data: updatedProduct 
+      });
+      await fetchProducts();
+      setShowEditForm(false);
+      setCurrentProduct(null);
+    } catch (err) {
+      setError('Failed to update product');
+    } finally {
+      setLoading(false);
+    }
   };
+
+  // Delete product
+  const deleteProduct = async (id) => {
+    try {
+      setLoading(true);
+      await del({ url: `artworks/${id}` });
+      await fetchProducts();
+    } catch (err) {
+      setError('Failed to delete product');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return  <div className="flex h-[80vh] justify-center items-center"> <Loading /></div>;
+  }
+
+  if (error) {
+    return <div className="flex h-[80vh] justify-center items-center"> <StateError message={error.message} onTryAgain={fetchProducts} /></div>;
+  }
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Product Management</h1>
-      <Button onClick={() => setShowAddForm(true)} className="mb-4">
-        <PlusIcon className="mr-2 h-4 w-4" /> Add Product
-      </Button>
       
-      {showAddForm && <ProductForm onSubmit={addProduct} onCancel={() => setShowAddForm(false)} />}
+      <Button 
+        text="Add Product"
+        bgColor="bg-primary"
+        textColor="text-white"
+        handler={() => setShowAddForm(true)}
+        className="mb-4"
+        icon={<PlusIcon className="mr-2 h-4 w-4" />}
+      />
+
+      {showAddForm && (
+        <ProductForm 
+          onSubmit={addProduct} 
+          onCancel={() => setShowAddForm(false)} 
+        />
+      )}
       
-      {showEditForm && <ProductForm product={currentProduct} onSubmit={updateProduct} onCancel={() => setShowEditForm(false)} />}
-      
+      {showEditForm && (
+        <ProductForm 
+          product={currentProduct} 
+          onSubmit={updateProduct} 
+          onCancel={() => {
+            setShowEditForm(false);
+            setCurrentProduct(null);
+          }} 
+        />
+      )}
+     {!showAddForm && !showEditForm && (
+ 
       <Table>
         <TableHeader>
           <TableRow>
@@ -55,24 +137,51 @@ export default function ProductManagement() {
         <TableBody>
           {products.map((product) => (
             <TableRow key={product.id}>
-              <TableCell>{product.name}</TableCell>
+              <TableCell>{product.title}</TableCell>
               <TableCell>${product.price.toFixed(2)}</TableCell>
-              <TableCell>{product.category}</TableCell>
-              <TableCell>
-                <Button variant="outline" size="icon" onClick={() => {
-                  setCurrentProduct(product);
-                  setShowEditForm(true);
-                }} className="mr-2">
-                  <PencilIcon className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="icon" onClick={() => deleteProduct(product.id)}>
-                  <TrashIcon className="h-4 w-4" />
-                </Button>
+              <TableCell>{product.category.name}</TableCell>
+              <TableCell className="flex gap-2">
+                <Button
+                  text=""
+                  bgColor="bg-blue-500"
+                  textColor="text-white"
+                  handler={() => {
+                    setCurrentProduct(product);
+                    setShowEditForm(true);
+                  }}
+                  icon={<PencilIcon className="h-4 w-4" />}
+                />
+                <Button
+                  text=""
+                  bgColor="bg-red-500"
+                  textColor="text-white"
+                  className="rounded-full"
+                  handler={() => {
+                    setProductToDelete(product.id);
+                    setShowDeleteConfirm(true);
+                  }}
+                  icon={<Iconify icon="mdi:trash" />}
+                />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+     )}
+      <Popconfirm
+        isOpen={showDeleteConfirm}
+        title="Delete Product"
+        description="Are you sure you want to delete this product? This action cannot be undone."
+        onConfirm={() => {
+          deleteProduct(productToDelete);
+          setShowDeleteConfirm(false);
+          setProductToDelete(null);
+        }}
+        onCancel={() => {
+          setShowDeleteConfirm(false);
+          setProductToDelete(null);
+        }}
+      />
     </div>
   );
 }

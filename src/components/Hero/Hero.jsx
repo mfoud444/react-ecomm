@@ -1,5 +1,3 @@
-// import React from "react";
-
 import axios from 'axios';
 import Slider from "react-slick";
 import Button from '../common/Button';
@@ -49,13 +47,13 @@ const Hero = () => {
                     <Slider {...settings}>
                         {artworks.map((artwork) => (
                             <div key={artwork.id} className="w-full p-4">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4">
+                                <div className="grid grid-cols-2 sm:grid-cols-2 items-center gap-4">
                                     {/* Text content section */}
-                                    <div className='flex flex-col justify-center gap-2 sm:pl-3 text-center sm:text-left'>
+                                    <div className='flex flex-col justify-center gap-2 sm:pl-3 text-left sm:text-left'>
                                         <h1 className="text-lg sm:text-4xl font-bold">{artwork.title}</h1>
                                         <h1 className="text-3xl sm:text-5xl font-bold">{artwork.subtitle}</h1>
-                                        <h1 className="text-4xl uppercase text-white dark:text-white/5 sm:text-[60px] font-bold">{artwork.title2}</h1>
-                                        <p className="text-xs sm:text-sm text-gray-400 mb-2">{artwork.description}</p>
+                                        <h1 className="text-4xl uppercase text-blue-900 dark:text-white/5 sm:text-[60px] font-bold">{artwork.title2}</h1>
+                                        <p className="text-xl sm:text-sm text-blue-500 mb-2 description-ellipsis">{artwork.description}</p>
                                         <Button
                                             text="View By Category"
                                             bgColor="bg-primary"
@@ -68,7 +66,7 @@ const Hero = () => {
                                         <img
                                             src={artwork.img}
                                             alt={artwork.title}
-                                            className="w-[200px] sm:w-[350px] h-[200px] sm:h-[350px] object-contain mx-auto drop-shadow-[-80px_4px_6px_rgba(0,0,0,.4)]"
+                                            className="w-[200px] sm:w-[350px] h-[200px] sm:h-[350px] object-contain mx-auto "
                                         />
                                     </div>
                                 </div>

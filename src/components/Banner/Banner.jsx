@@ -10,7 +10,7 @@ const Banner = ({ data }) => {
                     <div className='p-6 sm:p-8'>
                         <p className='text-sm'> {data.discount}</p>
                         <h1 className='uppercase text-4xl lg:text-7xl font-bold'>
-                            {" "}
+                         
                             {data.title}</h1>
                         <p className='text-sm'>{data.date}</p>
                     </div>

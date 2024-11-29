@@ -1,0 +1,187 @@
+# Cursor Rules
+
+## Project: Frontend for E-commerce Website
+### Basic Requirements  
+
+#### General Features:  
+- Display **loading, success, and error messages** (e.g., when loading the product list or adding a new product).  
+- Implement a **pagination feature**.  
+
+## Rules for Creating React Components:
+
+-. **Carefully consider** the component's purpose, functionality, and design.  
+. **Think slowly, step by step,** and outline your reasoning.  
+. **Check if a similar component already exists** in the following location:  
+   - `src/components`  
+
+**If it doesn't exist**, generate a detailed prompt for the component, including:  
+   - **Component name and purpose**  
+   - **Desired props and their types**  
+   - **Any specific styling or behavior requirements**  
+   - Mention **using Tailwind CSS** for styling and added dark theme mode.   
+   - Request **JavaScript (.jsx) usage**.  
+
+- **Do not use any library components**; implement the component using **plain HTML** and **Tailwind CSS** only.  
+
+use Iconify componts when used icons
+import Iconify from '@/components/common/Iconify';
+
+
+example fetch data from api 
+import get from "../utils/request";
+ const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await get({ url: "artworks", method: "GET" });
+      setProductsData(response.items);
+      setLoading(false);
+    } catch (err) {
+      setError("Failed to fetch products");
+      setLoading(false);
+    }
+  };
+
+# Art Platform API Documentation
+
+## Authentication
+- Base URL: `/api/v1`
+- Authentication: JWT Token required for most endpoints
+- Roles: Admin, Customer, Artist
+
+## User Endpoints
+### User Registration and Authentication
+- `POST /users`: Sign up new user
+- `POST /users/signin`: User login
+- `POST /users/create-admin`: Create admin user (restricted)
+
+### User Profile Management
+- `GET /users/profile`: Get current user profile
+- `PUT /users/profile`: Update current user profile
+- `GET /users/{id}`: Get user by ID (admin)
+- `PUT /users/{id}`: Update user (admin)
+- `DELETE /users/{id}`: Delete user (admin)
+
+## Artwork Endpoints
+### Artwork Management this as Product
+- `POST /artworks`: Create new artwork (Artist only)
+- `GET /artworks`: Get all artworks
+- `GET /artworks/{id}`: Get artwork by ID
+- `GET /artworks/artist/{artistId}`: Get artworks by artist
+- `PUT /artworks/{id}`: Update artwork (Admin, Artist)
+- `DELETE /artworks/{id}`: Delete artwork (Admin, Artist)
+
+## Workshop Endpoints
+### Workshop Management
+- `POST /workshops`: Create workshop (Admin, Artist)
+- `GET /workshops`: Get all workshops
+- `GET /workshops/{id}`: Get workshop by ID
+- `PUT /workshops/{id}`: Update workshop (Admin, Artist)
+- `DELETE /workshops/{id}`: Delete workshop (Admin, Artist)
+
+## Booking Endpoints
+### Booking Management
+- `POST /bookings`: Create booking (Customer)
+- `GET /bookings/my-bookings`: Get user's bookings (Customer)
+- `PUT /bookings/my-bookings/cancel/{id}`: Cancel booking (Customer)
+- `PUT /bookings/confirm/{id}`: Confirm booking (Admin)
+- `PUT /bookings/reject/{workshopId}`: Reject bookings (Admin)
+
+## Order Endpoints
+### Order Management
+- `POST /orders/add`: Create order (Customer)
+- `GET /orders/my-orders`: Get user's orders (Customer)
+- `GET /orders/{id}`: Get order by ID (Admin)
+- `PUT /orders/{id}`: Update order (Admin)
+- `DELETE /orders/{id}`: Delete order (Admin)
+
+## Category Endpoints
+### Category Management
+- `POST /categories`: Create category (Admin)
+- `GET /categories`: Get all categories
+- `GET /categories/{id}`: Get category by ID
+- `PUT /categories/{id}`: Update category (Admin)
+- `DELETE /categories/{id}`: Delete category (Admin)
+
+## Payment Endpoints
+### Payment Management
+- `POST /payment`: Create payment (Authenticated)
+- `GET /payment`: Get all payments (Admin)
+- `GET /payment/{id}`: Get payment by ID (Admin)
+- `PUT /payment/{id}`: Update payment (Admin)
+- `DELETE /payment/{id}`: Delete payment (Admin)
+
+## Pagination
+Most endpoints support pagination via query parameters:
+- `page`: Page number
+- `pageSize`: Number of items per page
+- `search`: Optional search term
+
+## Response Formats
+- Success: `200 OK` or `201 Created`
+- Error: JSON with error details
+- Pagination: Includes `items` and `totalCount`
+
+## Authorization Roles
+- `Admin`: Full system access
+- `Artist`: Create/manage artworks and workshops
+- `Customer`: Book workshops, place orders
+
+Here is a table outlining the **Attributes** and their **Constraints** for the entities:
+
+| **Entity**      | **Attribute**       | **Constraints**                                                                                                                                         |
+|------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **User**        | `Id`               | `Guid`, Required                                                                                                                                         |
+|                  | `Name`             | `Required`, `MinLength(2)`, `MaxLength(10)`                                                                                                             |
+|                  | `PhoneNumber`      | `Required`, `RegularExpression(@"^\+966[5][0-9]{8}$")`                                                                                                 |
+|                  | `Email`            | `Required`, `EmailAddress`                                                                                                                              |
+|                  | `Password`         | `Required`, `MinLength(8)`                                                                                                                              |
+|                  | `Description`      | Optional                                                                                                                                                 |
+|                  | `Salt`             | `Required`, `byte[]`                                                                                                                                    |
+|                  | `Role`             | `Required`, Enum (`Admin`, `Customer`, `Artist`)                                                                                                        |
+| **Workshop**    | `Id`               | `Guid`, Required                                                                                                                                         |
+|                  | `Name`             | `Required`, `MinLength(10)`, `MaxLength(30)`                                                                                                            |
+|                  | `Location`         | `Required`, `MinLength(10)`, `MaxLength(30)`                                                                                                            |
+|                  | `Description`      | `Required`, `MinLength(30)`, `MaxLength(200)`                                                                                                           |
+|                  | `StartTime`        | `Required`, `DateTime`                                                                                                                                  |
+|                  | `EndTime`          | `Required`, `DateTime`                                                                                                                                  |
+|                  | `Price`            | `Range(1.0, double.MaxValue)`                                                                                                                           |
+|                  | `Capacity`         | `Range(1, int.MaxValue)`                                                                                                                                |
+|                  | `Availability`     | `Required`, `bool`                                                                                                                                      |
+|                  | `CreatedAt`        | Optional, Default `DateTime.Now`                                                                                                                        |
+|                  | `UserId`           | `Required`, `Guid`                                                                                                                                      |
+| **Payment**     | `Id`               | `Guid`, Required                                                                                                                                         |
+|                  | `PaymentMethod`    | `Required`, `MinLength(10)`, `MaxLength(30)`                                                                                                            |
+|                  | `Amount`           | `Range(1.0, double.MaxValue)`                                                                                                                           |
+|                  | `CreatedAt`        | Required, `DateTime`                                                                                                                                    |
+|                  | `OrderId`          | Optional, `Guid`                                                                                                                                       |
+|                  | `BookingId`        | Optional, `Guid`                                                                                                                                       |
+| **OrderDetails**| `Id`               | `Guid`, Required                                                                                                                                         |
+|                  | `ArtworkId`        | `Required`, `Guid`                                                                                                                                      |
+|                  | `OrderId`          | `Required`, `Guid`                                                                                                                                      |
+|                  | `Quantity`         | `Range(1, int.MaxValue)`                                                                                                                                |
+| **Order**       | `Id`               | `Guid`, Required                                                                                                                                         |
+|                  | `TotalAmount`      | `Range(1.0, double.MaxValue)`                                                                                                                           |
+|                  | `ShippingAddress`  | `Required`, `MinLength(10)`, `MaxLength(30)`                                                                                                            |
+|                  | `CreatedAt`        | `Required`, `DateTime`                                                                                                                                  |
+|                  | `UserId`           | `Required`, `Guid`                                                                                                                                      |
+|                  | `OrderDetails`     | `Required`, List of `OrderDetails`                                                                                                                      |
+|                  | `Payment`          | Optional                                                                                                                                                 |
+| **Category**    | `Id`               | `Guid`, Required                                                                                                                                         |
+|                  | `Name`             | `Required`, `MinLength(2)`, `MaxLength(10)`                                                                                                             |
+| **Booking**     | `Id`               | `Guid`, Required                                                                                                                                         |
+|                  | `Status`           | `Required`, Enum (`Pending`, `Confirmed`, `Canceled`, `Rejected`)                                                                                       |
+|                  | `CreatedAt`        | Required, `DateTime`                                                                                                                                    |
+|                  | `WorkshopId`       | `Required`, `Guid`                                                                                                                                      |
+|                  | `UserId`           | `Required`, `Guid`                                                                                                                                      |
+|                  | `Payment`          | Optional                                                                                                                                                 |
+| **Artwork**     | `Id`               | `Guid`, Required                                                                                                                                         |
+|                  | `Title`            | `Required`, `MinLength(6)`, `MaxLength(30)`                                                                                                             |
+|                  | `Description`      | `Required`, `MinLength(30)`, `MaxLength(200)`                                                                                                           |
+|                  | `ImagUrl`          | `Required`                                                                                                                                               |
+|                  | `Quantity`         | `Range(1, int.MaxValue)`                                                                                                                                |
+|                  | `Price`            | `Range(1.0, double.MaxValue)`                                                                                                                           |
+|                  | `CreatedAt`        | `Required`, `DateTime`                                                                                                                                  |
+|                  | `UserId`           | `Required`, `Guid`                                                                                                                                      |
+|                  | `CategoryId`       | `Required`, `Guid`                                                                                                                                      |
+|                  | `OrderDetails`     | Optional, List of `OrderDetails`                                                                                                                        | 
+

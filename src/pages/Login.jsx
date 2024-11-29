@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import post from '../utils/request/index';
+import post  from '../utils/request/index';
+import get  from '../utils/request/index';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -31,16 +32,26 @@ const LoginPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        setLoading(true);  // Set loading to true when submitting
-        setErrorMessage(null);  // Reset error message
+        setLoading(true);  
+        setErrorMessage(null);  
         const response = await post({url: 'users/signin', data: formData});
+        console.log(response);
         localStorage.setItem('token', response);
-        setLoading(false);  // Set loading to false after response
-        navigate('/profile');  // Redirect to profile page after success
+        const profile = await get({ url: 'users/profile', method: 'GET' });
+        console.log(profile);
+        setLoading(false);  
+        localStorage.setItem('role', profile.role);
+        if (profile.role === 'Admin') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
       } catch (error) {
         setLoading(false);  // Set loading to false in case of error
         setErrorMessage('Error: ' + error.message);  // Set the error message

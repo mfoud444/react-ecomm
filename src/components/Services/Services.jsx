@@ -32,8 +32,8 @@ const ServiceData = [
 const Services = () => {
     return (
         <div>
-            <div className="container my-14 md:my-20">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 gap-y-8">
+            <div className="container my-14 md:my-20 place-items-center">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 gap-y-8 ">
                     {ServiceData.map((data) => (
                         <div key={data.id} className="flex items-start gap-4">
                             {data.icon}
