@@ -14,9 +14,9 @@ const AdminSidebar = ({ isOpen, onClose, onNavigate }) => {
     <aside
       className={`${
         isOpen ? 'translate-x-0' : '-translate-x-full'
-      } fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}
+      } fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-black shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}
     >
-      <div className="flex items-center justify-between h-16 px-6 bg-gray-800 text-white">
+      <div className="flex items-center justify-between h-16 px-6 bg-blue-900 text-white">
         <span className="text-xl font-semibold">Admin Panel</span>
         <button onClick={onClose} className="lg:hidden">
           <X size={24} />

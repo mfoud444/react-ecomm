@@ -9,9 +9,9 @@ const LoginPage = () => {
     password: ''
   });
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);  // State to handle loading
-  const [errorMessage, setErrorMessage] = useState(null);  // State to store error message
-  const navigate = useNavigate();  // useNavigate hook to redirect on success
+  const [loading, setLoading] = useState(false);  
+  const [errorMessage, setErrorMessage] = useState(null);  
+  const navigate = useNavigate();  
 
   const validateForm = () => {
     const newErrors = {};
@@ -40,6 +40,7 @@ const LoginPage = () => {
       try {
         setLoading(true);  
         setErrorMessage(null);  
+        localStorage.setItem('token', '');
         const response = await post({url: 'users/signin', data: formData});
         console.log(response);
         localStorage.setItem('token', response);
@@ -47,14 +48,15 @@ const LoginPage = () => {
         console.log(profile);
         setLoading(false);  
         localStorage.setItem('role', profile.role);
+        localStorage.setItem('profile', profile);
         if (profile.role === 'Admin') {
           navigate('/admin');
         } else {
           navigate('/');
         }
       } catch (error) {
-        setLoading(false);  // Set loading to false in case of error
-        setErrorMessage('Error: ' + error.message);  // Set the error message
+        setLoading(false);  
+        setErrorMessage('Error: ' + error.message);  
       }
     }
   };
@@ -65,7 +67,7 @@ const LoginPage = () => {
       ...prevState,
       [name]: value
     }));
-    // Clear error when user starts typing
+  
     if (errors[name]) {
       setErrors(prevErrors => ({
         ...prevErrors,
@@ -154,17 +156,17 @@ const LoginPage = () => {
           <div>
             <button
               type="submit"
-              disabled={loading}  // Disable button while loading
+              disabled={loading}  
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               {loading ? (
-                <div className="loader">Loading...</div>  // Add a loading spinner here
+                <div className="loader">Loading...</div>  
               ) : (
                 'Sign in'
               )}
             </button>
             {errorMessage && (
-              <p className="mt-2 text-sm text-red-600">{errorMessage}</p>  // Show error message
+              <p className="mt-2 text-sm text-red-600">{errorMessage}</p>  
             )}
           </div>
 

@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedAdminRoute from './components/common/ProtectedAdminRoute';
 import HomePage from './pages/HomePage';
 import ProuctsPage from './pages/ProuctsPage';
-import BlogsPage from './pages/BlogsPage';
 import WorkshopsPage from './pages/WorkshopsPage';
 import LoginPage from "./pages/Login";
 import SignupPage from "./pages/SignupPage";
@@ -28,7 +27,6 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/shop" element={<ProuctsPage />} />
-            <Route path="/blogs" element={<BlogsPage />} />
             <Route path="/workshops" element={<WorkshopsPage />} />
             <Route path="/auth/login" element={<LoginPage />} />
             <Route path="/auth/signup" element={<SignupPage />} />

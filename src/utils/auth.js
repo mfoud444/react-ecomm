@@ -11,3 +11,8 @@ export const getUserRole = () => {
 export const isAdmin = () => {
   return getUserRole() === 'Admin';
 }; 
+
+export const getCurrentProfile = () => {
+  const profile = localStorage.getItem('profile');
+  return profile;
+};

@@ -22,11 +22,7 @@ const MenuLinks = [
         name: "Workshops",
         link: "/workshops",
     },
-    {
-        id: 4,
-        name: "Blogs",
-        link: "/blogs",
-    },
+
 ];
 
 const DropdownLinks = [
