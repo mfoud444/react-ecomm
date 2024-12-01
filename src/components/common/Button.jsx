@@ -9,7 +9,7 @@ const Button = ({
   handler = () => {},
   className = "",
   disabled = false,
-  isLoading = false,
+ loading = false,
 }) => {
   return (
     <button
@@ -20,7 +20,7 @@ const Button = ({
         duration-300 py-2 px-8 rounded-full
         flex items-center justify-center gap-2`}
     >
-      {isLoading ? (
+      {loading ? (
         <span className="loader animate-spin border-2 border-t-transparent border-white rounded-full h-5 w-5"></span>
       ) : (
         <>
@@ -40,7 +40,7 @@ Button.propTypes = {
   handler: PropTypes.func,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  isLoading: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 export default Button;

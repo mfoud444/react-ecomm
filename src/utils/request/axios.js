@@ -1,9 +1,10 @@
 import axios from 'axios'
-export const baseURL = "https://canserai-artify.hf.space/api/v1/"
+import { handleUnauthorized } from '../auth'
 
 const service = axios.create({
-  baseURL:baseURL,
+  baseURL: "https://canserai-artify.hf.space/api/v1/",
 })
+
 service.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -25,6 +26,10 @@ service.interceptors.response.use(
     throw new Error(response.status.toString())
   },
   (error) => {
+    if (error.response?.status === 401) {
+      handleUnauthorized();
+      return Promise.reject(new Error('Unauthorized access. Please login again.'));
+    }
     return Promise.reject(error)
   },
 )

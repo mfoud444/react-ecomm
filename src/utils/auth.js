@@ -3,6 +3,17 @@ export const isAuthenticated = () => {
   return !!token;
 };
 
+export const logout = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('role');
+  localStorage.removeItem('profile');
+  window.location.href = '/auth/login';
+};
+
+export const handleUnauthorized = () => {
+  logout();
+};
+
 export const getUserRole = () => {
   const role = localStorage.getItem('role');
   return role;

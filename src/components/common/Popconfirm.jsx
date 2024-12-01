@@ -1,9 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from './Button';
 
 const Popconfirm = ({ isOpen, onConfirm, onCancel, title, description }) => {
   if (!isOpen) return null;
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+  
+    try {
+      const response = await onConfirm();
+      if (response?.status === 204 || response === undefined) {
+        console.log("Action successfully completed with no content.");
+      } else {
+        console.log("Action completed successfully:", response);
+      }
+    } catch (error) {
+     
+      if (error.code === 204) {
+        console.log("Action successfully completed (handled in error block).");
+      } else {
+        console.error("Error confirming action:", error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -22,7 +47,8 @@ const Popconfirm = ({ isOpen, onConfirm, onCancel, title, description }) => {
             text="Confirm"
             bgColor="bg-red-500"
             textColor="text-white"
-            handler={onConfirm}
+            handler={handleSubmit}  // Use handleSubmit to manage loading state
+            loading={loading}  // Pass loading state to the button
           />
         </div>
       </div>

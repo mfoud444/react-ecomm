@@ -1,13 +1,17 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { X, Home, ShoppingBag, Users, FileText } from 'lucide-react';
+import { X, Home, ShoppingBag, Users, FileText, Calendar } from 'lucide-react';
 
 const AdminSidebar = ({ isOpen, onClose, onNavigate }) => {
   const navItems = [
     { icon: Home, label: 'Dashboard', href: '/admin' },
     { icon: ShoppingBag, label: 'Products', href: '/admin/products' },
-    { icon: Users, label: 'Users', href: '/admin/users' },
+    { icon: FileText, label: 'Categories', href: '/admin/categories' },
+    { icon: Users, label: 'Customers', href: '/admin/customers' },
+    { icon: Users, label: 'Artists', href: '/admin/artists' },
+    { icon: Users, label: 'Admins', href: '/admin/admins' },
     { icon: FileText, label: 'Orders', href: '/admin/orders' },
+    { icon: Calendar, label: 'Workshops', href: '/admin/workshops' },
   ];
 
   return (

@@ -12,12 +12,14 @@ import ContactPage from './pages/ContactPage'
 import AboutPage from './pages/AboutPage';
 
 import { lazy, Suspense } from 'react';
-
-// Lazily loaded admin pages
 const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'));
 const ProductManagement = lazy(() => import('./pages/admin/ProductManagement'));
-// const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
-// const AdminOrders = lazy(() => import('./pages/admin/AdminOrders'));
+const CategoryManagement = lazy(() => import('./pages/admin/CategoryManagement'));
+const CustomerManagement = lazy(() => import('./pages/admin/CustomerManagement'));
+const ArtistManagement = lazy(() => import('./pages/admin/ArtistManagement'));
+const AdminManagement = lazy(() => import('./pages/admin/AdminManagement'));
+const OrderManagement = lazy(() => import('./pages/admin/OrderManagement'));
+const WorkshopManagement = lazy(() => import('./pages/admin/WorkshopManagement'));
 
 const App = () => {
   return (
@@ -34,7 +36,6 @@ const App = () => {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route path="/workshops" element={<WorkshopsPage />} />
             <Route path="*" element={<div>Page Not Found</div>} />
 
             <Route
@@ -49,9 +50,12 @@ const App = () => {
            
               <Route index element={<AdminDashboard />} />
               <Route path="products" element={<ProductManagement />} />
-              {/* Uncomment and use if Admin pages are available */}
-              {/* <Route path="users" element={<AdminUsers />} /> */}
-              {/* <Route path="orders" element={<AdminOrders />} /> */}
+              <Route path="categories" element={<CategoryManagement />} />
+              <Route path="customers" element={<CustomerManagement />} />
+              <Route path="artists" element={<ArtistManagement />} />
+              <Route path="admins" element={<AdminManagement />} />
+              <Route path="orders" element={<OrderManagement />} />
+              <Route path="workshops" element={<WorkshopManagement />} />
             </Route>
           </Routes>
         </Suspense>

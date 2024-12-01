@@ -5,6 +5,7 @@ import { Input } from '@/components/common/Input';
 
 const ProductForm = ({ product, onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
+    id:'',
     title: '',
     description: '',
     price: '',
@@ -12,10 +13,11 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
     categoryId: '',
     imageUrl: ''
   });
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (product) {
       setFormData({
+        id: product.id || '',
         title: product.title || '',
         description: product.description || '',
         price: product.price || '',
@@ -28,16 +30,25 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
     setFormData(prev => ({
       ...prev,
       [name]: name === 'price' || name === 'quantity' ? parseFloat(value) : value
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    setLoading(true);
+    try {
+      await onSubmit(formData); 
+    } catch (error) {
+      console.error('Error submitting form:', error); 
+    } finally {
+      setLoading(false); 
+    }
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
@@ -111,6 +122,7 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
           text={product ? 'Update' : 'Add'}
           bgColor="bg-primary"
           textColor="text-white"
+          loading={loading}
           type="submit"
         />
       </div>

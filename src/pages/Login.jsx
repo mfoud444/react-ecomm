@@ -40,7 +40,7 @@ const LoginPage = () => {
       try {
         setLoading(true);  
         setErrorMessage(null);  
-        localStorage.setItem('token', '');
+        localStorage.setItem('token', false);
         const response = await post({url: 'users/signin', data: formData});
         console.log(response);
         localStorage.setItem('token', response);
@@ -134,7 +134,7 @@ const LoginPage = () => {
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <input
                 id="remember-me"
                 name="remember-me"
@@ -144,13 +144,13 @@ const LoginPage = () => {
               <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
                 Remember me
               </label>
-            </div>
+            </div> */}
 
-            <div className="text-sm">
+            {/* <div className="text-sm">
               <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
                 Forgot your password?
               </a>
-            </div>
+            </div> */}
           </div>
 
           <div>
