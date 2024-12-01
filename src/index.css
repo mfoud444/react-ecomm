@@ -119,7 +119,16 @@
 }
 
 
+.gtext{
+  color: #648248;
+  background-image: -webkit-linear-gradient(0deg, #009048 5%, #007c12 22%, #00002e 56%);
 
+      background-clip: text; 
+     -webkit-background-clip: text; 
+     -webkit-text-fill-color: transparent; -webkit-text-fill-color: transparent;
+    
+      
+}
 
 .underlined {
   position: relative;

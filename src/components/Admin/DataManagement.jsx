@@ -184,7 +184,7 @@ const DataManagement = ({
         />
       )}
 
-      <h1 className="text-2xl font-bold mb-4 underlined">{title} Management</h1>
+      <h1 className="text-2xl font-bold mb-4 underlined gtext">{title} Management</h1>
 
       <div className="flex flex-col md:flex-row gap-4 mb-4">
         <form
@@ -200,7 +200,7 @@ const DataManagement = ({
               placeholder={searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
+              className="w-full pl-10 pr-4 py-2 border rounded-lg dark:bg-gray-800/60 dark:border-gray-700"
             />
             <Search className="absolute left-3 top-3 text-gray-400" size={20} />
           </div>
@@ -325,6 +325,7 @@ const DataManagement = ({
                         text=""
                         bgColor="bg-blue-500"
                         textColor="text-white"
+                          className="px-[10px]"
                         handler={() => {
                           setCurrentItem(item);
                           setShowEditForm(true);
@@ -339,6 +340,7 @@ const DataManagement = ({
                           setItemToDelete(item.id);
                           setShowDeleteConfirm(true);
                         }}
+                         className="px-[10px]"
                         icon={<Iconify icon="mdi:trash" />}
                       />
                     </TableCell>
@@ -350,7 +352,7 @@ const DataManagement = ({
         </div>
       )}
 
-      {!showAddForm && !showEditForm && (
+      {!showAddForm && !showEditForm && totalItems > 0 && (
         <div className="mt-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
             <select
@@ -369,21 +371,24 @@ const DataManagement = ({
           </div>
           <div className="flex gap-2">
             <Button
-              text="Previous"
+              text=""
+              icon={<Iconify icon="iconoir:skip-prev-solid" className="text-black dark:text-white" />}
               disabled={page === 1 || isTableLoading}
               handler={() => setPage((prev) => Math.max(prev - 1, 1))}
               bgColor={page === 1 ? "bg-gray-300" : "bg-blue-500"}
-              textColor="text-white"
+             textColor=" text-black dark:text-white"
             />
             <span className="flex items-center">
               Page {page} of {totalPages}
             </span>
             <Button
-              text="Next"
+              text=""
+                 className="px-[10px]"
+              icon={<Iconify icon="mage:next-fill" className="text-black dark:text-white" />}
               disabled={page === totalPages || isTableLoading}
               handler={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-              bgColor={page === totalPages ? "bg-gray-300" : "bg-blue-500"}
-              textColor="text-white"
+              bgColor={page === totalPages ? "bg-white-300" : "bg-blue-500"}
+              textColor=" text-black dark:text-white"
             />
           </div>
         </div>

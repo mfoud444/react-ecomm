@@ -4,7 +4,7 @@ import { X, Home, ShoppingBag, Users, FileText, Calendar } from 'lucide-react';
 
 const AdminSidebar = ({ isOpen, onClose, onNavigate }) => {
   const navItems = [
-    { icon: Home, label: 'Dashboard', href: '/admin' },
+    { icon: Home, label: 'Dashboard', href: '/admin/dashboard' },
     { icon: ShoppingBag, label: 'Products', href: '/admin/products' },
     { icon: FileText, label: 'Categories', href: '/admin/categories' },
     { icon: Users, label: 'Customers', href: '/admin/customers' },
