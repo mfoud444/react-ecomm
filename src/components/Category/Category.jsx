@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Button from "../common/Button";
 import get from '../../utils/request';
+import { useNavigate } from 'react-router-dom';
 
 const Category = () => {
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -41,6 +43,7 @@ const Category = () => {
                     bgColor={index % 2 === 0 ? "bg-primary" : "bg-white"}
                     textColor={index % 2 === 0 ? "text-white" : "text-yellow-600"}
                     className="hover:bg-opacity-90"
+                    handler={() => navigate(`/shop?category=${category.id}`)}
                   />
                 </div>
               </div>

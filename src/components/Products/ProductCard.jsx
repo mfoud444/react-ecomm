@@ -1,37 +1,35 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';  
-import Button from "../common/Button";
+import { useState } from 'react';
+import { addToCart } from '../../utils/cart';
+import Button from '../common/Button';
+import PropTypes from 'prop-types';
 
 const ProductCard = ({ data }) => {
-    // Local cart state for this component
-    const [cart, setCart] = useState([]);
-    const [loading, setLoading] = useState(false);  // Loading state for adding to cart
-    const [successMessage, setSuccessMessage] = useState("");  // Success message state
+    const [loading, setLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
 
-    // Add to cart function
-    const AddToCart = (item) => {
-        setLoading(true); // Set loading to true when starting the add-to-cart action
-
-        // Simulate a delay (e.g., API call)
-        setTimeout(() => {
-            setCart((prevCart) => [...prevCart, item]);  // Add the item to the cart
-            setLoading(false); // Stop the loading indicator
-            setSuccessMessage(`${item.title} has been added to the cart!`); // Show success message
-
-            // Clear the success message after 3 seconds
+    const handleAddToCart = (item) => {
+        console.log("ggggg");
+        setLoading(true);
+        try {
+            addToCart(item);
+            console.log("ggggg");
+            setSuccessMessage(`${item.title} has been added to the cart!`);
+            
             setTimeout(() => {
-                setSuccessMessage("sss");
+                setSuccessMessage("");
             }, 3000);
-        }, 1000);  // Simulate a 1-second delay for adding to the cart
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <div className="mb-10">
-            <div className="grid grid-col-3 sm:grid-cols-2 md:grid-cols-4 gap-5 place-items-center">
-                
-                {/* Card Section */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 place-items-center">
                 {data.map((item) => (
-                    <div className="group bg-blue-100 p-2 rounded-sm shadow-lg" key={item.id}>
+                    <div className="group bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg" key={item.id}>
                         <div className="relative">
                             <img
                                 src={item.img}
@@ -40,41 +38,29 @@ const ProductCard = ({ data }) => {
                             />
                         </div>
                         
-                        <div className="leading-7">
-                            <h2 className="font-semibold"> {item.title} </h2>
-                            <h2 className="font-bold"> {item.price} </h2>
+                        <div className="leading-7 mt-4">
+                            <h2 className="font-semibold dark:text-white">{item.title}</h2>
+                            <h2 className="font-bold text-primary">${item.price}</h2>
                         </div>
 
-                        {/* Add to Cart Button */}
                         <div className="mt-4">
                             <Button
                                 text={loading ? "Adding..." : "Add to Cart"}
-                                bgColor={loading ? "bg-gray-500" : "bg-primary"}  // Change button color when loading
-                                textColor={"text-white"}
-                                onClick={() => AddToCart(item)} 
-                                disabled={loading}  // Disable the button while loading
+                                bgColor={loading ? "bg-gray-500" : "bg-primary"}
+                                textColor="text-white"
+                                handler={() => handleAddToCart(item)}
+                                disabled={loading}
                             />
                         </div>
                     </div>
                 ))}
             </div>
 
-            {/* Success Message */}
             {successMessage && (
-                <div className="mt-6 bg-green-100 text-green-800 p-4 rounded-md">
-                    <strong>{successMessage}</strong>
+                <div className="fixed bottom-4 right-4 bg-green-100 text-green-800 p-4 rounded-md shadow-lg">
+                    {successMessage}
                 </div>
             )}
-
-            {/* Displaying the cart items */}
-            {/* <dv className="mt-6">
-                <h3 className="font-semibold">Cart Items:</h3>
-                <ul>
-                    {cart.map((item, index) => (
-                        <li key={index}>{item.title} - {item.price}</li>
-                    ))}
-                </ul>
-            </dv> */}
         </div>
     );
 };
@@ -82,10 +68,16 @@ const ProductCard = ({ data }) => {
 ProductCard.propTypes = {
     data: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.number.isRequired,
+            id: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number
+            ]).isRequired,
             img: PropTypes.string.isRequired,
             title: PropTypes.string.isRequired,
-            price: PropTypes.string.isRequired,
+            price: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number
+            ]).isRequired,
             aosDelay: PropTypes.string,
         })
     ).isRequired,

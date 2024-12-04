@@ -3,15 +3,11 @@ import DataManagement from "@/components/Admin/DataManagement";
 import CustomerForm from "@/components/Admin/CustomerForm";
 
 const columns = [
+  { key: "id", label: "Id" },
   { key: "name", label: "Name" },
   { key: "email", label: "Email" },
   { key: "phoneNumber", label: "Phone" },
   { key: "role", label: "Role" },
-  { 
-    key: "createdAt", 
-    label: "Created At",
-    render: (item) => new Date(item.createdAt).toLocaleDateString()
-  },
 ];
 
 const CustomerManagement = () => {

@@ -21,11 +21,22 @@ const ProductsPage = () => {
     max: Infinity
   });
 
+  const [categoryId, setCategoryId] = useState(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('category');
+    if (category) {
+      setCategoryId(category);
+    }
+  }, []);
+
   // Fetch Products
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await get({ url: "artworks", method: "GET" });
+      const url = categoryId ? `artworks?categoryId=${categoryId}` : 'artworks';
+      const response = await get({ url, method: "GET" });
       setProductsData(response.items);
       setLoading(false);
     } catch (err) {
@@ -36,7 +47,7 @@ const ProductsPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [categoryId]);
 
   // Memoized and Filtered Products
   const processedProducts = useMemo(() => {

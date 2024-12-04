@@ -41,45 +41,56 @@ const DataManagement = ({
   const [isDeleting, setIsDeleting] = useState(false);
   const [isTableLoading, setIsTableLoading] = useState(false);
   const { handleApiError } = useApiError();
-
   const fetchData = async () => {
     try {
       setIsTableLoading(true);
-      var url = '';
-      if(endpoint ==='artworks'){
-       url = `${endpoint}?page=${page}&pageSize=${pageSize}&sortBy=createdAt`;
-      }else{
-         url = `${endpoint}`;
+      let url = '';
+  
+      // Build URL based on endpoint
+      if (endpoint === 'artworks') {
+        url = `${endpoint}?page=${page}&pageSize=${pageSize}&sortBy=createdAt`;
+      } else {
+        url = `${endpoint}`;
       }
-      const response = await get({
-        url: url,
-      });
-      console.log(response)
-      if(endpoint ==='artworks'){
+  
+      // Fetch data from the server
+      const response = await get({ url: url });
+      console.log(response);
+  
+      // Handle data response based on endpoint
+      if (endpoint === 'artworks') {
         setData(response.items || []);
         setTotalItems(response.totalCount || 0);
-     
-      }else{
+      } else if (endpoint.startsWith('users')) {
+        // Extract role from the query string (if provided)
+        const queryRole = new URLSearchParams(endpoint.split('?')[1]).get('role');
+        if (queryRole) {
+          const filteredData = response.filter((user) => user.role === queryRole);
+          setData(filteredData || []);
+          setTotalItems(filteredData.length || 0);
+        } else {
+          setData(response || []);
+          setTotalItems(response.length || 0);
+        }
+      } else {
         setData(response || []);
         setTotalItems(response.length || 0);
       }
-   
-   
+  
       setError(null);
     } catch (err) {
-      if (response?.status == 404) {
-        setError(null);
+      if (err?.response?.status === 404) {
+        setError(null); // No error for empty data
       } else {
         const errorMessage = handleApiError(err);
         setError(errorMessage);
       }
-   
     } finally {
       setLoading(false);
       setIsTableLoading(false);
     }
   };
-
+  
   useEffect(() => {
     fetchData();
   }, [page, pageSize]);
@@ -91,6 +102,8 @@ const DataManagement = ({
 
   const handleAdd = async (item) => {
     try {
+      console.log(item);
+  
       await post({ url: endpoint, data: item });
       await fetchData();
       setShowAddForm(false);
@@ -103,6 +116,7 @@ const DataManagement = ({
 
   const handleUpdate = async (updatedItem) => {
     try {
+      console.log(updatedItem);
       await put({ url: `${endpoint}/${updatedItem.id}`, data: updatedItem });
       await fetchData();
       setShowEditForm(false);
@@ -187,7 +201,7 @@ const DataManagement = ({
       <h1 className="text-2xl font-bold mb-4 underlined gtext">{title} Management</h1>
 
       <div className="flex flex-col md:flex-row gap-4 mb-4">
-        <form
+        {/* <form
           onSubmit={(e) => {
             e.preventDefault();
             setPage(1);
@@ -210,7 +224,7 @@ const DataManagement = ({
             textColor="text-white"
             type="submit"
           />
-        </form>
+        </form> */}
         <div className="flex flex-row gap-4">
           <Button
             text={`Add ${title}`}
@@ -383,7 +397,7 @@ const DataManagement = ({
             </span>
             <Button
               text=""
-                 className="px-[10px]"
+              className="px-[10px]"
               icon={<Iconify icon="mage:next-fill" className="text-black dark:text-white" />}
               disabled={page === totalPages || isTableLoading}
               handler={() => setPage((prev) => Math.min(prev + 1, totalPages))}

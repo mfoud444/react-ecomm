@@ -10,6 +10,8 @@ import CartPage from "./pages/CartPage";
 import AdminLayout from './components/Admin/AdminLayout';
 import ContactPage from './pages/ContactPage'
 import AboutPage from './pages/AboutPage';
+import OrdersPage from './pages/OrdersPage';
+import CategoryPage from './pages/CategoryPage';
 
 import { lazy, Suspense } from 'react';
 const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'));
@@ -36,6 +38,8 @@ const App = () => {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/categories" element={<CategoryPage />} />
             <Route path="*" element={<div>Page Not Found</div>} />
 
             <Route

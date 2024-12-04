@@ -3,23 +3,22 @@ import PropTypes from 'prop-types';
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 
-const CategoryForm = ({ category, onSubmit, onCancel }) => {
+const CategoryForm = ({ item, onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
-    id: '',
     name: '',
-    description: '',
+
   });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (category) {
+    if (item) {
       setFormData({
-        id: category.id || '',
-        name: category.name || '',
-        description: category.description || '',
+        id: item.id || '',
+        name: item.name || '',
+      
       });
     }
-  }, [category]);
+  }, [item]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,7 +43,7 @@ const CategoryForm = ({ category, onSubmit, onCancel }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
       <h2 className="text-xl font-semibold mb-4">
-        {category ? 'Edit Category' : 'Add New Category'}
+        {item ? 'Edit Category' : 'Add New Category'}
       </h2>
 
       <Input
@@ -57,7 +56,7 @@ const CategoryForm = ({ category, onSubmit, onCancel }) => {
         maxLength={10}
       />
 
-      <div className="space-y-1">
+      {/* <div className="space-y-1">
         <label className="block text-sm font-medium">
           Description
         </label>
@@ -71,7 +70,7 @@ const CategoryForm = ({ category, onSubmit, onCancel }) => {
           className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
           rows={4}
         />
-      </div>
+      </div> */}
 
       <div className="flex justify-end space-x-2 pt-4">
         <Button
@@ -81,7 +80,7 @@ const CategoryForm = ({ category, onSubmit, onCancel }) => {
           handler={onCancel}
         />
         <Button
-          text={category ? 'Update' : 'Add'}
+          text={item ? 'Update' : 'Add'}
           bgColor="bg-primary"
           textColor="text-white"
           loading={loading}
@@ -93,7 +92,7 @@ const CategoryForm = ({ category, onSubmit, onCancel }) => {
 };
 
 CategoryForm.propTypes = {
-  category: PropTypes.object,
+  item: PropTypes.object,
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired
 };

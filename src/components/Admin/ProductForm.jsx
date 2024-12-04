@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
+import CategorySelect from '@/components/common/CategorySelect';
 
-const ProductForm = ({ product, onSubmit, onCancel }) => {
+const ProductForm = ({ item, onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
-    id:'',
     title: '',
     description: '',
     price: '',
@@ -13,25 +13,36 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
     categoryId: '',
     imageUrl: ''
   });
+
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    if (product) {
+    if (item) {
       setFormData({
-        id: product.id || '',
-        title: product.title || '',
-        description: product.description || '',
-        price: product.price || '',
-        quantity: product.quantity || '',
-        categoryId: product.categoryId || '',
-        imageUrl: product.imageUrl || ''
+        id: item.id || '',
+        title: item.title || '',
+        description: item.description || '',
+        price: item.price || '',
+        quantity: item.quantity || '',
+        categoryId: item.category.id || '',
+        imageUrl: item.imageUrl || ''
+      });
+    } else {
+      setFormData({
+        title: '',
+        description: '',
+        price: '',
+        quantity: '',
+        categoryId: '',
+        imageUrl: ''
       });
     }
-  }, [product]);
+  }, [item]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
-    setFormData(prev => ({
+
+    setFormData((prev) => ({
       ...prev,
       [name]: name === 'price' || name === 'quantity' ? parseFloat(value) : value
     }));
@@ -41,21 +52,23 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await onSubmit(formData); 
+      await onSubmit(formData);
     } catch (error) {
-      console.error('Error submitting form:', error); 
+      console.error('Error submitting form:', error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
-  
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
-      <h2 className="text-xl font-semibold mb-4">
-        {product ? 'Edit Product' : 'Add New Product'}
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 p-6 bg-white dark:bg-gray-800 rounded-lg shadow"
+    >
+      <h2 className="text-xl font-semibold mb-4 dark:text-white">
+        {item ? 'Edit Product' : 'Add New Product'}
       </h2>
-      
+
       <Input
         label="Title"
         name="title"
@@ -67,9 +80,7 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
       />
 
       <div className="space-y-1">
-        <label className="block text-sm font-medium">
-          Description
-        </label>
+        <label className="block text-sm font-medium dark:text-white">Description</label>
         <textarea
           name="description"
           value={formData.description}
@@ -77,7 +88,7 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
           required
           minLength={30}
           maxLength={200}
-          className="w-full px-3 py-2 border rounded-md"
+          className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           rows={4}
         />
       </div>
@@ -103,6 +114,17 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
         min={1}
       />
 
+      <div className="space-y-1">
+        <label className="block text-sm font-medium dark:text-white">Category </label>
+
+        <CategorySelect
+          value={formData.categoryId}
+          onChange={handleChange}
+          required
+          name="categoryId"
+        />
+      </div>
+
       <Input
         label="Image URL"
         name="imageUrl"
@@ -119,7 +141,7 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
           handler={onCancel}
         />
         <Button
-          text={product ? 'Update' : 'Add'}
+          text={item ? 'Update' : 'Add'}
           bgColor="bg-primary"
           textColor="text-white"
           loading={loading}
@@ -131,10 +153,17 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
 };
 
 ProductForm.propTypes = {
-  product: PropTypes.object,
+  item: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    price: PropTypes.number,
+    quantity: PropTypes.number,
+    categoryId: PropTypes.string,
+    imageUrl: PropTypes.string,
+  }),
   onSubmit: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired
+  onCancel: PropTypes.func.isRequired,
 };
 
 export default ProductForm;
-

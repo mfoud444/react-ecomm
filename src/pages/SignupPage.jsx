@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { v6 as uuidv6 } from 'uuid';
-import post from '../utils/request/index';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Input } from '../components/common/Input';
+import post from '../utils/request/index'; 
+import { Input } from '../components/common/Input'; 
+import get  from '../utils/request/index';
 
-// Reusable Dropdown Component
 const RoleSelect = ({ value, onChange, error }) => (
   <div>
     <label htmlFor="role" className="block text-sm font-medium text-gray-700">
@@ -23,7 +22,6 @@ const RoleSelect = ({ value, onChange, error }) => (
         <option value="">Select Role</option>
         <option value="Customer">Customer</option>
         <option value="Artist">Artist</option>
-        <option value="Admin">Admin</option>
       </select>
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
     </div>
@@ -32,8 +30,6 @@ const RoleSelect = ({ value, onChange, error }) => (
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
-    id: '',
-    salt: '',
     name: '',
     email: '',
     phoneNumber: '+9665',
@@ -47,30 +43,40 @@ const SignupPage = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setFormData((prevState) => ({ ...prevState, id: uuidv6() }));
-  }, []);
-
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name) newErrors.name = 'Name is required';
-    if (!formData.email) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email format';
+    if (!formData.name) {
+      newErrors.name = 'Name is required';
+    } else if (formData.name.length < 2 || formData.name.length > 10) {
+      newErrors.name = 'Name must be between 2 and 10 characters';
+    }
+
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Invalid email format';
+    }
+
     if (!formData.phoneNumber || !/^\+9665[0-9]{8}$/.test(formData.phoneNumber)) {
       newErrors.phoneNumber = 'Phone number should be a valid Saudi number';
     }
+
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 8) {
       newErrors.password = 'Password must be at least 8 characters';
     }
+
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = 'Please confirm your password';
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
-    if (!formData.role) newErrors.role = 'Role is required';
+
+    if (!formData.role) {
+      newErrors.role = 'Role is required';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -80,28 +86,36 @@ const SignupPage = () => {
     e.preventDefault();
     if (validateForm()) {
       setIsSubmitting(true);
-      try {
-       
+  
         const { confirmPassword, ...dataToSubmit } = formData;
-        console.log("dataToSubmit", dataToSubmit)
         const response = await post({
           url: 'users',
           data: dataToSubmit,
         });
-        if (response.success) {
-          setSuccessMessage('Account created successfully!');
-          setTimeout(() => navigate('/profile'), 2000);
-        } else {
-          setSuccessMessage('Error creating account. Try again.');
-        }
-      } catch (error) {
-        console.error('Signup error:', error);
-        setSuccessMessage('Error submitting form. Try again.');
-      } finally {
-        setIsSubmitting(false);
-      }
+        
+        const data = { 
+          email: formData.email, 
+          password: formData.password 
+        };
+        console.log(data);
+               localStorage.setItem('token', false);
+               const response2 = await post({url: 'users/signin', data:data });
+          
+               localStorage.setItem('token', response2);
+               const profile = await get({ url: 'users/profile', method: 'GET' });
+               console.log(profile);
+              
+               localStorage.setItem('role', profile.role);
+               localStorage.setItem('profile', profile);
+        setSuccessMessage('Account created successfully!');
+        navigate('/');
+        
+ 
     }
   };
+
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -113,10 +127,14 @@ const SignupPage = () => {
   const handleBlur = (e) => {
     const { name } = e.target;
     const newErrors = { ...errors };
-    
+
     switch (name) {
       case 'name':
-        if (!formData.name) newErrors.name = 'Name is required';
+        if (!formData.name) {
+          newErrors.name = 'Name is required';
+        } else if (formData.name.length < 2 || formData.name.length > 10) {
+          newErrors.name = 'Name must be between 2 and 10 characters';
+        }
         break;
       case 'email':
         if (!formData.email) newErrors.email = 'Email is required';
@@ -128,30 +146,24 @@ const SignupPage = () => {
         }
         break;
       case 'password':
-        if (!formData.password) newErrors.password = 'Password is required';
-        else if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters';
+        if (!formData.password) {
+          newErrors.password = 'Password is required';
+        } else if (formData.password.length < 8) {
+          newErrors.password = 'Password must be at least 8 characters';
+        }
         break;
       case 'confirmPassword':
-        if (!formData.confirmPassword) newErrors.confirmPassword = 'Please confirm your password';
-        else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
+        if (!formData.confirmPassword) {
+          newErrors.confirmPassword = 'Please confirm your password';
+        } else if (formData.password !== formData.confirmPassword) {
+          newErrors.confirmPassword = 'Passwords do not match';
+        }
         break;
       default:
         break;
     }
 
     setErrors(newErrors);
-  };
-
-  const isFormValid = () => {
-    return (
-      formData.name &&
-      formData.email &&
-      formData.phoneNumber &&
-      formData.password &&
-      formData.confirmPassword &&
-      formData.role &&
-      Object.keys(errors).length === 0
-    );
   };
 
   return (
@@ -170,7 +182,7 @@ const SignupPage = () => {
             onBlur={handleBlur}
             error={errors.name}
             required
-            placeholder="Enter your name"
+            placeholder="Enter your name (2-10 characters)"
           />
           <Input
             label="Email"
@@ -254,9 +266,9 @@ const SignupPage = () => {
             />
           </div>
           <button
-            type="submit"
-         
-           
+                type="submit"
+              
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             {isSubmitting ? 'Creating...' : 'Create Account'}
           </button>
@@ -272,7 +284,16 @@ const SignupPage = () => {
             </p>
           )}
         </form>
+        <div className="text-center">
+            <p className="text-sm text-gray-600">
+              Already have an account?{' '}
+              <a href="/auth/login" className="font-medium text-blue-600 hover:text-blue-500">
+                Login in
+              </a>
+            </p>
+          </div>
       </div>
+      
     </div>
   );
 };

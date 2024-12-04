@@ -7,11 +7,6 @@ const columns = [
   { key: "email", label: "Email" },
   { key: "phoneNumber", label: "Phone" },
   { key: "description", label: "Description" },
-  { 
-    key: "createdAt", 
-    label: "Created At",
-    render: (item) => new Date(item.createdAt).toLocaleDateString()
-  },
 ];
 
 const ArtistManagement = () => {

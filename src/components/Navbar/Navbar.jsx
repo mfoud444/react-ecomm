@@ -14,11 +14,16 @@ const MenuLinks = [
     },
     {
         id: 2,
+        name: "Categories",
+        link: "/categories",
+    },
+    {
+        id: 3,
         name: "Shop",
         link: "/shop",
     },
     {
-        id: 3,
+        id: 4,
         name: "Workshops",
         link: "/workshops",
     },
@@ -104,7 +109,7 @@ const Navbar = ({ handleOrderPopup }) => {
                         <Link to="/cart" className="relative p-3">
                             <FaCartShopping className="text-xl text-gray-600 dark:text-gray-400" />
                             <div className="w-4 h-4 bg-red-500 text-white rounded-full absolute top-0 right-0 flex items-center justify-center text-xs">
-                         0   
+                                {JSON.parse(localStorage.getItem('cart') || '[]').reduce((total, item) => total + item.quantity, 0)}
                             </div>
                         </Link>
                         <div>  
@@ -141,7 +146,7 @@ const Navbar = ({ handleOrderPopup }) => {
                                 </li>
                             ))}
                             {/* Mobile Dropdown Links */}
-                            <li>
+                            {/* <li>
                                 <p className="font-semibold text-gray-500 dark:text-gray-400 py-2">
                                     Quick Links
                                 </p>
@@ -157,7 +162,7 @@ const Navbar = ({ handleOrderPopup }) => {
                                         </li>
                                     ))}
                                 </ul>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                 </div>
